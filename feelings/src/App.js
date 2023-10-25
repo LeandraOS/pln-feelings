@@ -55,8 +55,8 @@ function App() {
   };
 
   const smallInputStyle = {
-    width: '100px',
-    height: '30px',
+    width: '800px',
+    height: '40px',
     fontSize: '16px',
     textAlign: 'center',
     border: '1px solid #427AA1',
