@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import imageSrc from './assets/Feelings.png';
+import { getSentiment } from './service';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -7,7 +8,12 @@ function App() {
   const [inputType, setInputType] = useState('non');
   const [artist, setArtist] = useState('');
   const [track, setTrack] = useState('');
-  const [lyric, setLyric] = useState('');
+  const [sentiment, setSentiment] = useState('');
+
+  const getData = async (payload) => {
+    const data = await getSentiment(payload)
+    setSentiment(data)
+  }
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -23,12 +29,12 @@ function App() {
 
   const handleSubmitTitle = (e) => {
     e.preventDefault();
-    alert(`Valor do input: ${artist}, ${track}`);
+    getData({"artist": artist, "track": track})
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Valor do input: ${inputValue}`);
+    getData({"lyrics": inputValue})
   };
 
   const handleSelectInput = (selected) => {
