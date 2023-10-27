@@ -1,5 +1,6 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import imageSrc from './assets/Feelings.png';
+import './App.css'
 import { getSentiment } from './service';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
 
   const getData = async (payload) => {
     const data = await getSentiment(payload)
-    setSentiment(data)
+    setSentiment(data["data"])
   }
 
   const handleInputChange = (e) => {
@@ -29,12 +30,12 @@ function App() {
 
   const handleSubmitTitle = (e) => {
     e.preventDefault();
-    getData({"artist": artist, "track": track})
+    getData({ "artist": artist, "track": track })
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getData({"lyrics": inputValue})
+    getData({ "lyrics": inputValue })
   };
 
   const handleSelectInput = (selected) => {
@@ -44,11 +45,11 @@ function App() {
 
   // Define um objeto de estilo para aumentar o tamanho do input
   const inputStyle = {
-    width: '800px', 
-    height: '800px', 
-    fontSize: '16px', 
+    width: '800px',
+    height: '800px',
+    fontSize: '16px',
     textAlign: 'center',
-    border: '1px solid #427AA1', 
+    border: '1px solid #427AA1',
     borderRadius: '20px'
   };
 
@@ -57,7 +58,7 @@ function App() {
     padding: '10px',
     margin: '10px',
     textAlign: 'center',
-    
+
   };
 
   const smallInputStyle = {
@@ -73,20 +74,30 @@ function App() {
   return (
     <div style={{ textAlign: 'center' }}>
       <img src={imageSrc} alt="logo" />
-      {inputSelected ? ( 
-        <div> 
-            {inputType ? (
+      {sentiment ? (
+        <div>
+          {sentiment.map((item, index) => (
+            <p key={index} className={item[1]}>
+              {item[0]}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <div>
+          {inputSelected ? (
+            <div>
+              {inputType ? (
                 <form onSubmit={handleSubmit}>
-                <input
+                  <input
                     type="text"
                     value={inputValue}
                     onChange={handleInputChange}
                     placeholder="Digite algo"
                     style={inputStyle} // Aplicando o estilo ao input
-                />
-                <div style={buttonStyle}> {/* Div para centralizar o botão */}
-                    <button style={{height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px'}} type="submit">Enviar</button>
-                </div>
+                  />
+                  <div style={buttonStyle}> {/* Div para centralizar o botão */}
+                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleSubmitTitle}>
@@ -105,25 +116,27 @@ function App() {
                     onChange={handleInputChangeTrack}
                   />
                   <div style={buttonStyle}> {/* Div para centralizar o botão */}
-                    <button style={{height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px'}} type="submit">Enviar</button>
-                </div>
+                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  </div>
                 </form>
               )}
-        </div>
-      ) : (
-        <div>
-          <button
-            onClick={() => handleSelectInput(true)}
-            style={{padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px'}}
-          >
-            Enviar letra
-          </button>
-          <button
-            onClick={() => handleSelectInput(false)}
-            style={{padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px'}}
-          >
-            Enviar por titulo da música
-          </button>
+            </div>
+          ) : (
+            <div>
+              <button
+                onClick={() => handleSelectInput(true)}
+                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+              >
+                Enviar letra
+              </button>
+              <button
+                onClick={() => handleSelectInput(false)}
+                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+              >
+                Enviar por titulo da música
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
