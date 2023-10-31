@@ -20,3 +20,39 @@
   height: 60px;
   font-size: 20px;
 }
+
+.raiva {
+  color: red;
+}
+
+.alegria {
+  color: yellow;
+}
+
+.medo {
+  color: purple;
+}
+
+.nojo {
+  color: green;
+}
+
+.tristeza {
+  color: blue;
+}
+
+.satisfação {
+  color: orange;
+}
+
+.confiança {
+  color: violet;
+}
+
+.amor{
+  color: pink;
+}
+
+.esperança{
+  color: lightblue;
+}

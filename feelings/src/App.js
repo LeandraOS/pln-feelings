@@ -1,24 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import imageSrc from './assets/Feelings.png';
+import './App.css'
+import { getSentiment } from './service';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
+  const [inputSelected, setInputSelected] = useState('');
+  const [inputType, setInputType] = useState('non');
+  const [artist, setArtist] = useState('');
+  const [track, setTrack] = useState('');
+  const [sentiment, setSentiment] = useState('');
+
+  const getData = async (payload) => {
+    const data = await getSentiment(payload)
+    setSentiment(data["data"])
+  }
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
+  const handleInputChangeArtist = (e) => {
+    setArtist(e.target.value);
+  };
+
+  const handleInputChangeTrack = (e) => {
+    setTrack(e.target.value);
+  };
+
+  const handleSubmitTitle = (e) => {
+    e.preventDefault();
+    getData({ "artist": artist, "track": track })
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Valor do input: ${inputValue}`);
+    getData({ "lyrics": inputValue })
+  };
+
+  const handleSelectInput = (selected) => {
+    setInputType(selected);
+    setInputSelected(true);
   };
 
   // Define um objeto de estilo para aumentar o tamanho do input
   const inputStyle = {
-    width: '800px', // Defina a largura desejada
-    height: '800px', // Defina a altura desejada
-    fontSize: '16px', // Defina o tamanho da fonte desejado
-    textAlign: 'center'
+    width: '800px',
+    height: '800px',
+    fontSize: '16px',
+    textAlign: 'center',
+    border: '1px solid #427AA1',
+    borderRadius: '20px'
   };
 
   // Define um objeto de estilo para centralizar o botão
@@ -26,24 +58,87 @@ function App() {
     padding: '10px',
     margin: '10px',
     textAlign: 'center',
-    
+
+  };
+
+  const smallInputStyle = {
+    width: '800px',
+    height: '40px',
+    fontSize: '16px',
+    textAlign: 'center',
+    border: '1px solid #427AA1',
+    borderRadius: '10px',
+    margin: '5px',
   };
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <img src={imageSrc} alt="Sua Imagem" />
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Digite algo"
-          style={inputStyle} // Aplicando o estilo ao input
-        />
-        <div style={buttonStyle}> {/* Div para centralizar o botão */}
-          <button type="submit">Enviar</button>
+      <img src={imageSrc} alt="logo" />
+      {sentiment ? (
+        <div>
+          {sentiment.map((item, index) => (
+            <p key={index} className={item[1]}>
+              {item[0]}
+            </p>
+          ))}
         </div>
-      </form>
+      ) : (
+        <div>
+          {inputSelected ? (
+            <div>
+              {inputType ? (
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="Digite algo"
+                    style={inputStyle} // Aplicando o estilo ao input
+                  />
+                  <div style={buttonStyle}> {/* Div para centralizar o botão */}
+                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleSubmitTitle}>
+                  <input
+                    type="text"
+                    style={smallInputStyle} // Aplicando o estilo ao segundo tipo de input
+                    placeholder="Artista"
+                    onChange={handleInputChangeArtist}
+
+                  />
+                  <br />
+                  <input
+                    type="text"
+                    style={smallInputStyle} // Aplicando o estilo ao segundo tipo de input
+                    placeholder="Música"
+                    onChange={handleInputChangeTrack}
+                  />
+                  <div style={buttonStyle}> {/* Div para centralizar o botão */}
+                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  </div>
+                </form>
+              )}
+            </div>
+          ) : (
+            <div>
+              <button
+                onClick={() => handleSelectInput(true)}
+                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+              >
+                Enviar letra
+              </button>
+              <button
+                onClick={() => handleSelectInput(false)}
+                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+              >
+                Enviar por titulo da música
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
