@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import imageSrc from './assets/Feelings.png';
-import './App.css'
+import './App.css';
 import { getSentiment } from './service';
+import { Spin } from 'antd';
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -10,11 +11,22 @@ function App() {
   const [artist, setArtist] = useState('');
   const [track, setTrack] = useState('');
   const [sentiment, setSentiment] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const getData = async (payload) => {
-    const data = await getSentiment(payload)
-    setSentiment(data["data"])
-  }
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await getSentiment(payload);
+      setSentiment(data["data"]);
+    } catch (error) {
+      setError('Música não encontrada. Por favor, verifique os detalhes da música.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -30,12 +42,12 @@ function App() {
 
   const handleSubmitTitle = (e) => {
     e.preventDefault();
-    getData({ "artist": artist, "track": track })
+    getData({ "artist": artist, "track": track });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getData({ "lyrics": inputValue })
+    getData({ "lyrics": inputValue });
   };
 
   const handleSelectInput = (selected) => {
@@ -43,38 +55,28 @@ function App() {
     setInputSelected(true);
   };
 
-  // Define um objeto de estilo para aumentar o tamanho do input
-  const inputStyle = {
-    width: '800px',
-    height: '800px',
-    fontSize: '16px',
-    textAlign: 'center',
-    border: '1px solid #427AA1',
-    borderRadius: '20px'
-  };
-
-  // Define um objeto de estilo para centralizar o botão
-  const buttonStyle = {
-    padding: '10px',
-    margin: '10px',
-    textAlign: 'center',
-
-  };
-
-  const smallInputStyle = {
-    width: '800px',
-    height: '40px',
-    fontSize: '16px',
-    textAlign: 'center',
-    border: '1px solid #427AA1',
-    borderRadius: '10px',
-    margin: '5px',
-  };
-
   return (
-    <div style={{ textAlign: 'center' }}>
-      <img src={imageSrc} alt="logo" />
-      {sentiment ? (
+    <>
+    <div class="app-bar">
+        <div class="emotion-raiva">Raiva</div>
+        <div class="emotion-alegria">Alegria</div>
+        <div class="emotion-medo">Medo</div>
+        <div class="emotion-nojo">Nojo</div>
+        <div class="emotion-tristeza">Tristeza</div>
+        <div class="emotion-satisfação">Satisfação</div>
+        <div class="emotion-confiança">Confiança</div>
+        <div class="emotion-amor">Amor</div>
+        <div class="emotion-esperança">Esperança</div>
+    </div>
+    <div className="app-container">
+      <img src={imageSrc} alt="logo" className="app-logo" />
+      <p className="app-tagline">🎵Transformando trechos de músicas em cores, pintando emoções!🎵</p>
+      <div style={{backgroundColor: '#007476', height: '1px', width: '80px', marginBottom: '20px' }}></div>
+      {loading ? (
+          <Spin tip='Loading' size='large' />
+        ) : error ? (
+          <p style={{color: 'red'}}>{error}</p>
+        ) : sentiment ? (
         <div>
           {sentiment.map((item, index) => (
             <p key={index} className={item[1]}>
@@ -88,58 +90,62 @@ function App() {
             <div>
               {inputType ? (
                 <form onSubmit={handleSubmit}>
-                  <input
+                  <textarea
                     type="text"
                     value={inputValue}
                     onChange={handleInputChange}
-                    placeholder="Digite algo"
-                    style={inputStyle} // Aplicando o estilo ao input
+                    placeholder="Digite a sua música desejada."
+                    className="app-input"
                   />
-                  <div style={buttonStyle}> {/* Div para centralizar o botão */}
-                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  <div className="app-button-container">
+                    <button className="app-button" type="submit">
+                      Enviar
+                    </button>
                   </div>
                 </form>
               ) : (
                 <form onSubmit={handleSubmitTitle}>
                   <input
                     type="text"
-                    style={smallInputStyle} // Aplicando o estilo ao segundo tipo de input
+                    className="app-small-input"
                     placeholder="Artista"
                     onChange={handleInputChangeArtist}
-
                   />
                   <br />
                   <input
                     type="text"
-                    style={smallInputStyle} // Aplicando o estilo ao segundo tipo de input
+                    className="app-small-input"
                     placeholder="Música"
                     onChange={handleInputChangeTrack}
                   />
-                  <div style={buttonStyle}> {/* Div para centralizar o botão */}
-                    <button style={{ height: '40px', width: '120px', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }} type="submit">Enviar</button>
+                  <div className="app-button-container">
+                    <button className="app-button" type="submit">
+                      Enviar
+                    </button>
                   </div>
                 </form>
               )}
             </div>
           ) : (
-            <div>
+            <div style={{display: 'flex', gap: '2rem', alignItems: 'center', justifyContent: 'center'}}>
               <button
                 onClick={() => handleSelectInput(true)}
-                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+                className="app-button"
               >
                 Enviar letra
               </button>
               <button
                 onClick={() => handleSelectInput(false)}
-                style={{ padding: '10px', margin: '10px', textAlign: 'center', backgroundColor: '#427AA1', color: '#fff', fontSize: '16px', borderRadius: '10px' }}
+                className="app-button-large"
               >
-                Enviar por titulo da música
+                Enviar por título da música
               </button>
             </div>
           )}
         </div>
       )}
     </div>
+    </>
   );
 }
 
