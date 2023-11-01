@@ -18,7 +18,7 @@ Esta aplicação permite a análise de sentimentos em letras de músicas. O usu�
 - **Análise de Sentimento**: A aplicação utiliza o modelo GPT (Generative Pre-trained Transformer) para analisar a letra da música ou o título da música e o artista e determinar as emoções presentes na música.
 - Um LLM, como o GPT-3, é um modelo treinado em uma grande quantidade de texto para entender a linguagem natural e realizar tarefas relacionadas à linguagem, como análise de sentimentos, tradução, respostas a perguntas e geração de texto.
 
-O GPT-3 (e outras versões menores, como GPT-2) é um exemplo de um LLM.
+- O GPT-3 (e outras versões menores, como GPT-2) é um exemplo de um LLM.
 
 - **Representação Visual**: As palavras-chave na letra da música são destacadas com cores associadas a diferentes sentimentos. Isso ajuda a visualizar as emoções presentes na música.
 
