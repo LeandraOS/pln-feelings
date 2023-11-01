@@ -66,9 +66,9 @@ Ou acesse o deploy https://pln-feelings-tsy3.vercel.app/
 ## Utilização da Aplicação
 Na página inicial, você pode selecionar entre duas opções:
 
-### Enviar letra**: Para analisar a letra de uma música, insira o texto no campo de entrada e clique em "Enviar".
+### Enviar letra: Para analisar a letra de uma música, insira o texto no campo de entrada e clique em "Enviar".
 
-### Enviar por título da música**: Para analisar uma música com base no título e no artista, insira essas informações nos campos correspondentes e clique em "Enviar".
+### Enviar por título da música: Para analisar uma música com base no título e no artista, insira essas informações nos campos correspondentes e clique em "Enviar".
 A aplicação realizará a análise de sentimentos e destacará as palavras-chave na letra da música com cores associadas a diferentes emoções.
 
 As emoções destacadas na letra da música são exibidas na parte inferior da página.
