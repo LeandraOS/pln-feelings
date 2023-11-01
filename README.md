@@ -77,5 +77,7 @@ As emoções destacadas na letra da música são exibidas na parte inferior da p
 
 Você pode alternar entre as diferentes opções de emoção (Raiva, Alegria, Medo, Nojo, Tristeza, Satisfação, Confiança, Amor, Esperança) para visualizar as palavras-chave associadas a cada emoção na letra da música.
 
+### Repositório que contém o backend
+Este é o link para o repositório que contém o código da API https://github.com/dnlgomesl/pln-api
 
 
